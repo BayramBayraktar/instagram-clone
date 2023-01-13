@@ -1,0 +1,34 @@
+version: "3.4"
+services:
+  ui:
+    build:
+      context: ./client
+      dockerfile: ./dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - instagram-app
+    depends_on:
+      - api
+  api:
+    env_file: "./api/config/config.env"
+    build:
+      context: ./api
+      dockerfile: ./dockerfile
+    ports:
+      - 8000:8000
+    networks:
+      - instagram-app
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - instagram-app
+networks:
+  instagram-app:
+    driver: bridge
+
